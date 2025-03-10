@@ -8,18 +8,18 @@ import { ExcalidrawErrorBoundary } from './ExcalidrawErrorBoundary';
 
 // Lazy load both Excalidraw and library data together
 const ExcalidrawWithLibrary = React.lazy(async () => {
-  const [{ Excalidraw }, libraryData ] = await Promise.all([
+  const [{ Excalidraw }, libraryData] = await Promise.all([
     import('@excalidraw/excalidraw'),
     import('../../assets/library.json')
   ]);
-  
+
   return {
     default: (props: ExcalidrawProps) => (
       <Excalidraw
         {...props}
         initialData={{
           ...props.initialData,
-          libraryItems: libraryData.libraryItems as LibraryItems
+          libraryItems: libraryData.libraryItems as LibraryItems as LibraryItems
         }}
       />
     )
@@ -40,19 +40,9 @@ export const ExcalidrawWrapper: React.FC<ExcalidrawWrapperProps> = (props) => {
   }, []);
 
   useEffect(() => {
-    handleResize();
-    let timeoutId: number;
-
-    const debouncedResize = () => {
-      clearTimeout(timeoutId);
-      timeoutId = window.setTimeout(handleResize, EXCALIDRAW_DEFAULTS.RESIZE_DEBOUNCE);
-    };
-
-    window.addEventListener('resize', debouncedResize);
-
+    window.addEventListener('resize', handleResize);
     return () => {
-      window.removeEventListener('resize', debouncedResize);
-      clearTimeout(timeoutId);
+      window.removeEventListener('resize', handleResize);
     };
   }, [handleResize]);
 
