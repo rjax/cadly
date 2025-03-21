@@ -1,4 +1,4 @@
-import type { ExcalidrawProps } from "@excalidraw/excalidraw/types/types";
+import { ExcalidrawProps } from "@rjax/excalidraw/types";
 
 export interface ExcalidrawWrapperProps extends Partial<ExcalidrawProps> {
   className?: string;
